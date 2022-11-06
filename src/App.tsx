@@ -1,11 +1,14 @@
+import cx from "classix";
+import { useState } from "react";
 import GameInfo from "./components/GameInfo";
 
-import logo from "./assets/netlify.svg";
 import Logo from "./components/Logo";
 
 const cells = new Array(16).fill("");
 
 export default function App() {
+  const [selectedCells, selectCells] = useState<number[]>([]);
+
   return (
     <main className="grid place-items-center h-screen w-screen bg-gradient-to-r from-gray-400 via-gray-600 to-blue-800">
       <div className="bg-[rgb(21,26,30)] p-6 rounded-lg grid gap-5">
@@ -22,8 +25,18 @@ export default function App() {
           {cells.map((_c, i) => (
             <button
               key={i}
-              className="bg-gray-500 w-32 h-28 rounded-md grid place-items-center text-gray-100 hover:bg-cyan-900 hover:text-teal-200">
-              <Logo />
+              className="bg-gray-500 w-32 h-28 rounded-md text-gray-100 hover:bg-cyan-900 hover:text-teal-300 relative"
+              onClick={() => selectedCells.length < 2 && selectCells((pv) => [...pv, i])}>
+              <div className="absolute inset-0 grid place-items-center [backface-visibility:hidden]">
+                <Logo />
+              </div>
+              <div
+                className={cx(
+                  "absolute inset-0 grid place-items-center [backface-visibility:hidden] ",
+                  selectedCells.includes(i) ? "" : "[transform:rotateY(180deg)]"
+                )}>
+                <span className="text-6xl">🤩</span>
+              </div>
             </button>
           ))}
         </div>
