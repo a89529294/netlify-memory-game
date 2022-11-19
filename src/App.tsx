@@ -50,13 +50,19 @@ export default function App() {
             <h2 className="text-xl">{moves}</h2>
           </GameInfo>
           {finalEmojiArray.map((emoji, i) => {
-            const flip = selectedCells.map((c) => c.idx).includes(i) || correctCells.includes(i);
+            const selectedCellsIdx = selectedCells.map((c) => c.idx);
+            const flip = selectedCellsIdx.includes(i) || correctCells.includes(i);
             return (
               <button
                 key={i}
                 className=" w-32 h-28 rounded-md text-gray-100 [perspective:1000px]"
                 onClick={() => {
-                  if (selectedCells.length >= 2 || correctCells.includes(i)) return;
+                  if (
+                    selectedCells.length >= 2 ||
+                    correctCells.includes(i) ||
+                    selectedCellsIdx.includes(i)
+                  )
+                    return;
                   selectCells((pv) => [...pv, { emoji, idx: i }]);
                   setMoves((pv) => ++pv);
                 }}>
